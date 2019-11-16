@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+// 导入virtualized样式
+import 'react-virtualized/styles.css';
 // 导入字体图标样式
 import './assets/fonts/iconfont.css'
 // 最后导入自己的样式

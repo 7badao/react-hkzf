@@ -9,3 +9,4 @@ import { BASEURL } from './url'
 axios.defaults.baseURL = BASEURL
 // 挂载到组件的原型上
 Component.prototype.http = axios
+export { axios }

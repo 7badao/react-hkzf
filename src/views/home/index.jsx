@@ -14,14 +14,15 @@ import image3 from '../../assets/images/nav-3.png'
 import image4 from '../../assets/images/nav-4.png'
 // 导入搜索框子组件
 import SearchHeader from "../../components/searchHeader";
-
+// 导入获取本地存储城市
+import { getCity } from "../../utils/city";
 export default class Index extends React.Component {
   state = {
     swiper: null, // 轮播图
     imgHeight: 212,
     groups: null, // 租房数据
     news: null, // 新闻数据
-    cityName:'北京' // 城市名字数据
+    cityName:'深圳' // 城市名字数据
   }
   navs = [
     { icon: image1, text: '整租', path: '/layout/houseList' },
@@ -29,13 +30,17 @@ export default class Index extends React.Component {
     { icon: image3, text: '地图找房', path: '/map' },
     { icon: image4, text: '去出租', path: '/rent/add' }
   ]
-  componentDidMount() {
+  async componentDidMount() {
+    const { label, value } = await getCity()
+    this.setState({
+      cityName:label
+    })
     // 轮播图
     this.getSwipeData()
     // 租房小组
-    this.getHouseData()
+    this.getHouseData(value)
     // 新闻数据
-    this.getNewsData()
+    this.getNewsData(value)
   }
   // 发送轮播图请求
   getSwipeData = async () => {
@@ -48,9 +53,9 @@ export default class Index extends React.Component {
     }, 100)
   }
   // 获取租房小组数据
-  getHouseData = async () => {
+  getHouseData = async value => {
     let results = await this.http.get(
-      '/home/groups?area=AREA%7C88cff55c-aaa4-e2e0'
+      `/home/groups?area=${value}`
     )
     // console.log(results.data)
     this.setState({
@@ -58,9 +63,9 @@ export default class Index extends React.Component {
     })
   }
   // 获取新闻数据
-  getNewsData = async () => {
+  getNewsData = async value => {
     let results = await this.http.get(
-      '/home/news?area=AREA%7C88cff55c-aaa4-e2e0'
+      `/home/news?area=${value}`
     )
     // console.log(results.data.body)
     // 数据更改
